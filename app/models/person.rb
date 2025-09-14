@@ -10,4 +10,6 @@
 #  home_planet_id :integer
 #
 class Person < ApplicationRecord
+    has_many :person_films
+    has_many :films, through: :person_films
 end
