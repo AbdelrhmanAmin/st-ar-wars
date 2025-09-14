@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_16_184606) do
+ActiveRecord::Schema.define(version: 2025_09_14_093825) do
 
   create_table "films", force: :cascade do |t|
     t.string "title"
@@ -52,6 +52,51 @@ ActiveRecord::Schema.define(version: 2021_04_16_184606) do
     t.integer "senator_id"
   end
 
+  create_table "social_media_event_attendees", force: :cascade do |t|
+    t.integer "social_media_event_id", null: false
+    t.integer "social_media_user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["social_media_event_id"], name: "index_social_media_event_attendees_on_social_media_event_id"
+    t.index ["social_media_user_id"], name: "index_social_media_event_attendees_on_social_media_user_id"
+  end
+
+  create_table "social_media_events", force: :cascade do |t|
+    t.string "title"
+    t.date "date"
+    t.integer "creator_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["creator_id"], name: "index_social_media_events_on_creator_id"
+  end
+
+  create_table "social_media_posts", force: :cascade do |t|
+    t.integer "social_media_user_id", null: false
+    t.text "content"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["social_media_user_id"], name: "index_social_media_posts_on_social_media_user_id"
+  end
+
+  create_table "social_media_user_friendships", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "friend_id", null: false
+    t.boolean "accepted", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["friend_id", "user_id"], name: "index_social_media_user_friendships_on_friend_id_and_user_id", unique: true
+    t.index ["friend_id"], name: "index_social_media_user_friendships_on_friend_id"
+    t.index ["user_id", "friend_id"], name: "index_social_media_user_friendships_on_user_id_and_friend_id", unique: true
+    t.index ["user_id"], name: "index_social_media_user_friendships_on_user_id"
+  end
+
+  create_table "social_media_users", force: :cascade do |t|
+    t.string "full_name"
+    t.integer "age"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "species", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -63,4 +108,10 @@ ActiveRecord::Schema.define(version: 2021_04_16_184606) do
   add_foreign_key "people", "species"
   add_foreign_key "person_films", "films"
   add_foreign_key "person_films", "people"
+  add_foreign_key "social_media_event_attendees", "social_media_events"
+  add_foreign_key "social_media_event_attendees", "social_media_users"
+  add_foreign_key "social_media_events", "social_media_users", column: "creator_id"
+  add_foreign_key "social_media_posts", "social_media_users"
+  add_foreign_key "social_media_user_friendships", "social_media_users", column: "friend_id"
+  add_foreign_key "social_media_user_friendships", "social_media_users", column: "user_id"
 end
