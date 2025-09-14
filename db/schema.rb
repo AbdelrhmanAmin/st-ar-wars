@@ -12,14 +12,6 @@
 
 ActiveRecord::Schema.define(version: 2021_04_16_184606) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  create_table "film_people", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "films", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", precision: 6, null: false
@@ -27,8 +19,8 @@ ActiveRecord::Schema.define(version: 2021_04_16_184606) do
   end
 
   create_table "films_people", force: :cascade do |t|
-    t.bigint "film_id", null: false
-    t.bigint "person_id", null: false
+    t.integer "film_id", null: false
+    t.integer "person_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["film_id"], name: "index_films_people_on_film_id"
@@ -37,7 +29,7 @@ ActiveRecord::Schema.define(version: 2021_04_16_184606) do
 
   create_table "people", force: :cascade do |t|
     t.string "name"
-    t.bigint "species_id", null: false
+    t.integer "species_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "home_planet_id"
@@ -45,8 +37,8 @@ ActiveRecord::Schema.define(version: 2021_04_16_184606) do
   end
 
   create_table "person_films", force: :cascade do |t|
-    t.bigint "person_id", null: false
-    t.bigint "film_id", null: false
+    t.integer "person_id", null: false
+    t.integer "film_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["film_id"], name: "index_person_films_on_film_id"
